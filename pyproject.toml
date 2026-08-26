@@ -12,7 +12,7 @@ dependencies = [
 ]
 
 [project.scripts]
-dz = "dz:main"
+app = "app:main"
 
 [build-system]
 requires = ["uv_build>=0.12.5,<0.13.0"]
@@ -22,3 +22,44 @@ build-backend = "uv_build"
 dev = [
     "ruff>=0.16.4",
 ]
+
+[tool.ruff]
+# 1. Исключения: папки, которые не нужно проверять (виртуальные окружения, кэши)
+exclude = [
+    ".git", "__pycache__", "build", "dist", ".venv", ".ruff_cache"
+]
+
+# 2. Основные настройки форматирования
+line-length = 88          # Длина строки (стандарт Black)
+indent-width = 4          # Размер отступа
+target-version = "py311"  # Минимальная версия Python для анализа
+
+# 3. Настройки самого линтера (проверка кода)
+[tool.ruff.lint]
+# Выбор групп правил. 
+# E/F — ошибки стиля (Pycodestyle), I — сортировка импортов (isort),
+# B — Bugbear (дополнительные проверки ошибок), UP — обновление синтаксиса (pyupgrade).
+select = ["E", "F", "B", "I", "UP"]
+ignore = [
+    "E501",   # Игнорировать длину строки на уровне линта (если доверяете format)
+    "D203",   # Конфликт стилей docstring (часто спорный момент)
+]
+fixable = ["ALL"]         # Разрешить автоисправление всех найденных проблем
+unfixable = []            # Список правил, которые нельзя исправлять автоматически
+
+# 4. Специфичные правила для отдельных файлов
+[tool.ruff.lint.per-file-ignores]
+"tests/**.py" = ["S101"]  # В тестах разрешаем использование assert
+"**/migrations/**.py" = ["E402", "F401"]  # В миграциях Django часто нарушаются импорты
+
+# 5. Настройки модуля сортировки импортов (аналог isort)
+[tool.ruff.lint.isort]
+known-first-party = ["app"]  # Указывает название вашего пакета для правильной группировки
+combine-as-imports = true    # Группирует from x import a, b в одну строку
+
+# 6. Настройки автоматического форматирования (аналог Black)
+[tool.ruff.format]
+quote-style = "double"       # Использовать двойные кавычки
+indent-style = "space"       # Пробелы вместо табуляций
+skip-magic-trailing-comma = false # Учитывать запятые при переносе строк
+docstring-code-format = true # Форматировать примеры кода внутри документации
