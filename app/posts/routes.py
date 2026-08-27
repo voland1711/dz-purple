@@ -11,7 +11,7 @@ class UnAuthHttpException(HTTPException):
 
 
 @router.get("/{post_id}")
-def get_greet(post_id: int = Path(ge=5)):
+def get_greet(post_id: int = Path(ge=1)):
 
     return {"Пост": post_id}
 
@@ -23,10 +23,10 @@ async def create_post(request: Request, response: Response):
     return data
 
 
-@router.patch("/")
-async def update_post(request: Request):
+@router.patch("/{post_id}")
+async def update_post(request: Request, post_id: int = Path(ge=1)):
     data = await request.json()
-    return data
+    return {"Пост обновлен": post_id, "Пост": data}
 
 
 @router.delete("/{post_id}")
