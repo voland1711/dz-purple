@@ -1,4 +1,3 @@
-from fastapi import HTTPException
 from pydantic import BaseModel, Field, field_validator
 
 
@@ -18,7 +17,7 @@ class PostCreateRequest(BaseModel):
     def key_not_empty(cls, value):
         clean_value = value.rstrip()
         if not clean_value:
-            raise HTTPException(400, "content must be valid string")
+            raise ValueError("content must be valid string")
         return clean_value
 
 
@@ -38,7 +37,7 @@ class PostUpdateRequest(BaseModel):
     def key_not_empty(cls, value):
         clean_value = value.rstrip()
         if not clean_value:
-            raise HTTPException(400, "content must be valid string")
+            raise ValueError("content must be valid string")
         return clean_value
 
 
