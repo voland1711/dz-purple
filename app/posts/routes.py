@@ -37,8 +37,15 @@ async def create_post(data: PostCreateRequest, response: Response):
 
 @router.patch("/{post_id}")
 async def update_post(data: PostUpdateRequest, path: PostsPath = Depends()):
+    
+    if data.content:
+        tmp_content = data.content
+    else:
+        tmp_content = "Старое сообщение"
     return PostUpdateResponse(
-        user_id=data.user_id, content=data.content, post_id=path.post_id
+        user_id=data.user_id,
+        content=tmp_content,
+        post_id=path.post_id
     )
 
 

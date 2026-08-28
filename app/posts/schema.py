@@ -30,7 +30,9 @@ class PostCreateResponse(BaseModel):
 
 class PostUpdateRequest(BaseModel):
     user_id: int = Field(ge=1)
-    content: str
+    content: str | None = None
+
+    model_config = {"extra": "forbid"}
 
     @field_validator("content")
     @classmethod
