@@ -81,11 +81,12 @@ wheels = [
 ]
 
 [[package]]
-name = "dz"
+name = "dz_purple"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "fastapi", extra = ["standard"] },
+    { name = "pydantic", extra = ["email"] },
 ]
 
 [package.dev-dependencies]
@@ -94,7 +95,10 @@ dev = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "fastapi", extras = ["standard"], specifier = ">=0.141.1" }]
+requires-dist = [
+    { name = "fastapi", extras = ["standard"], specifier = ">=0.141.1" },
+    { name = "pydantic", extras = ["email"], specifier = ">=2.13.4" },
+]
 
 [package.metadata.requires-dev]
 dev = [{ name = "ruff", specifier = ">=0.16.4" }]
