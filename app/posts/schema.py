@@ -5,6 +5,10 @@ class PostsPath(BaseModel):
     post_id: int = Field(gt=0)
 
 
+class PostsPathResponse(BaseModel):
+    post_id: int
+
+
 class PostCreateRequest(BaseModel):
     user_id: int = Field(ge=1)
     content: str
