@@ -20,6 +20,7 @@ class UnAuthHttpException(HTTPException):
 
 @router.get(
     "/{post_id}",
+    response_model=PostsPathResponse,
     summary="Возвращает пост по запрошенному id",
     description="""Сервис получает id требуемого поста. После валидации данных возвращает пост, в случае его наличия.
 """,
@@ -31,6 +32,7 @@ def get_post(path: PostsPath = Depends()):
 @router.post(
     "/",
     response_class=JSONResponse,
+    response_model=PostCreateResponse,
     status_code=201,
     summary="Создание поста",
     description="""Сервис получает данные для нового поста, в случае успешной валидации создается пост.
@@ -49,6 +51,7 @@ async def create_post(data: PostCreateRequest):
 
 @router.patch(
     "/{post_id}",
+    response_model=PostUpdateResponse,
     summary="Обновлени поста по id",
     description="""Сервис получает обновленные данные поста. В случае.
 """,
@@ -66,6 +69,7 @@ async def update_post(data: PostUpdateRequest, path: PostsPath = Depends()):
 
 @router.delete(
     "/{post_id}",
+    response_model=PostsPathResponse,
     summary="Удаляет пост по id",
     description="""Сервис получает id поста, которое требуется удалить. После валидации данных удаляет пост, в случае его наличия.
 """,

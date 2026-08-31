@@ -12,6 +12,7 @@ router = APIRouter(prefix="/rand", tags=["Random"])
 @router.get(
     "/",
     response_class=JSONResponse,
+    response_model=RandomResponse,
     summary="Возвращает случайное целое число",
     description="""
 Получает два целых числа(по умолчанию [0; 100]) и возвращает
