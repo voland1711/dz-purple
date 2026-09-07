@@ -9,6 +9,7 @@ from .schema import (
     PostUpdateRequest,
     PostUpdateResponse,
 )
+from .service import PostServiceDeps
 
 router = APIRouter(prefix="/posts", tags=["Posts"])
 
@@ -25,8 +26,9 @@ class UnAuthHttpException(HTTPException):
     description="""Сервис получает id требуемого поста. После валидации данных возвращает пост, в случае его наличия.
 """,
 )
-def get_post(path: PostsPath = Depends()):
-    return PostsPathResponse(path.post_id)
+def get_post(service: PostServiceDeps, path: PostsPath = Depends()):
+    res = service.get_post(path.post_id)
+    return PostsPathResponse(post_id=res)
 
 
 @router.post(
