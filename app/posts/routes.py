@@ -1,3 +1,4 @@
+from core.settings import SettingsDeps
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import JSONResponse
 
@@ -26,7 +27,13 @@ class UnAuthHttpException(HTTPException):
     description="""Сервис получает id требуемого поста. После валидации данных возвращает пост, в случае его наличия.
 """,
 )
-def get_post(service: PostServiceDeps, path: PostsPath = Depends()):
+def get_post(
+    service: PostServiceDeps, settings: SettingsDeps, path: PostsPath = Depends()
+):
+    print(f"Строка подключения БД для размещения постов: {settings.db.url}")
+    print(
+        f"Строка подключения БД для размещения постов: {settings.debounce.minimal_post_debounce_time}"
+    )
     res = service.get_post(path.post_id)
     return PostsPathResponse(post_id=res)
 
