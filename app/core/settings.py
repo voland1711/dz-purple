@@ -83,10 +83,10 @@ class Settings(BaseSettings):
 
     @field_validator("minimal_post_debounce_time")
     @classmethod
-    def validate_minimal_post_debounce_time(cls, v: str) -> str:
+    def validate_minimal_post_debounce_time(cls, v: str) -> int:
 
-        if not isinstance(v, int):
-            raise ValueError("minimal_post_debounce_time (minutes) must be int")
+        if v < 0:
+            raise ValueError("minimal_post_debounce_time (minutes) must be > 0")
 
         return v
 
