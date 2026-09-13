@@ -1,5 +1,6 @@
-from .core.settings import Settings
 from fastapi import FastAPI
+
+from .core.settings import Settings
 from .posts import routes as post_routes
 from .rand import routes as rand_routes
 

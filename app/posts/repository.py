@@ -2,7 +2,9 @@ import logging
 from typing import Annotated
 
 from fastapi import Depends
+
 logger = logging.getLogger(__name__)
+
 
 class PostRepository:
     def get_by_id(self, post_id: int):

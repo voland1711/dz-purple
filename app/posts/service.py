@@ -7,6 +7,7 @@ from .repository import PostRepository, PostRepositoryDeps
 
 logger = logging.getLogger(__name__)
 
+
 class PostService:
     def __init__(self, repo: PostRepository):
         self.repo = repo
