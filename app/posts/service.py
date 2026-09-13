@@ -1,9 +1,11 @@
+import logging
 from typing import Annotated
 
 from fastapi import Depends
 
 from .repository import PostRepository, PostRepositoryDeps
 
+logger = logging.getLogger(__name__)
 
 class PostService:
     def __init__(self, repo: PostRepository):
@@ -14,7 +16,7 @@ class PostService:
 
 
 def get_post_service(repo: PostRepositoryDeps):
-    print("PostsService")
+    logger.info("Работает: PostsService")
     return PostService(repo)
 
 

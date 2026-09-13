@@ -1,7 +1,7 @@
-from core.settings import Settings
+from .core.settings import Settings
 from fastapi import FastAPI
-from posts import routes as post_routes
-from rand import routes as rand_routes
+from .posts import routes as post_routes
+from .rand import routes as rand_routes
 
 
 def create_app() -> FastAPI:

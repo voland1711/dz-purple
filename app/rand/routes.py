@@ -1,7 +1,7 @@
 # Query get rnd_from и rnd_to, возвращающий случайное чилос типа int в пределах диапазона (границы включены)
 from random import randint
 
-from core.settings import SettingsDeps
+from app.core.settings import SettingsDeps
 from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
 
