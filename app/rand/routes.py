@@ -4,6 +4,8 @@ from random import randint
 from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
 
+from app.core.settings import SettingsDeps
+
 from .schema import RandomRequest, RandomResponse
 
 router = APIRouter(prefix="/rand", tags=["Random"])
@@ -19,6 +21,7 @@ router = APIRouter(prefix="/rand", tags=["Random"])
 случайное число из полученного диапазона
 """,
 )
-def get_rnd(randomRequest: RandomRequest = Depends()):
+def get_rnd(settings: SettingsDeps, randomRequest: RandomRequest = Depends()):
+    print(f"Строка подключения для модуля 'Random': {settings.db.url}")
     res = randint(randomRequest.rnd_from, randomRequest.rnd_to)
     return RandomResponse(rnd=res)

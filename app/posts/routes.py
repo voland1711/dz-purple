@@ -1,5 +1,9 @@
+import logging
+
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import JSONResponse
+
+from app.core.settings import SettingsDeps
 
 from .schema import (
     PostCreateRequest,
@@ -9,7 +13,9 @@ from .schema import (
     PostUpdateRequest,
     PostUpdateResponse,
 )
+from .service import PostServiceDeps
 
+logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/posts", tags=["Posts"])
 
 
@@ -25,8 +31,18 @@ class UnAuthHttpException(HTTPException):
     description="""Сервис получает id требуемого поста. После валидации данных возвращает пост, в случае его наличия.
 """,
 )
-def get_post(path: PostsPath = Depends()):
-    return PostsPathResponse(path.post_id)
+def get_post(
+    service: PostServiceDeps, settings: SettingsDeps, path: PostsPath = Depends()
+):
+    logger.info("Строка подключения БД для размещения постов: %s", settings.db.url)
+    logger.info(
+        "Минимальное количество минут для размещения следующего поста: : %s",
+        settings.debounce.minimal_post_debounce_time,
+    )
+
+    logger.info("Запрос поста, под номером: %s", path.post_id)
+    res = service.get_post(path.post_id)
+    return PostsPathResponse(post_id=res)
 
 
 @router.post(
@@ -40,7 +56,7 @@ def get_post(path: PostsPath = Depends()):
 """,
 )
 async def create_post(data: PostCreateRequest):
-
+    logger.info("answer_id = %s", data.answer_id, extra={"user_id": data.user_id})
     return PostCreateResponse(
         user_id=data.user_id,
         content=data.content,
@@ -57,6 +73,10 @@ async def create_post(data: PostCreateRequest):
 """,
 )
 async def update_post(data: PostUpdateRequest, path: PostsPath = Depends()):
+
+    logger.info(
+        "Обновлен пост, post_id = %s", path.post_id, extra={"user_id": data.user_id}
+    )
 
     if data.content:
         tmp_content = data.content
@@ -75,5 +95,5 @@ async def update_post(data: PostUpdateRequest, path: PostsPath = Depends()):
 """,
 )
 async def delete_post(path: PostsPath = Depends()):
-
-    return PostsPathResponse(path.post_id)
+    logger.info("Удален пост с post_id = %s", path.post_id)
+    return PostsPathResponse(post_id=path.post_id)
