@@ -44,6 +44,8 @@ class PostUpdateRequest(BaseModel):
     @field_validator("content")
     @classmethod
     def key_not_empty(cls, value):
+        if value is None:
+            return value
         clean_value = value.rstrip()
         if not clean_value:
             raise ValueError("content must be valid string")

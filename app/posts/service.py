@@ -30,16 +30,18 @@ class PostService:
 
     async def update(self, data: PostUpdateRequest, post_id: int):
         post = await self.post_repo.get_by_id(post_id)
+        if post is None or post.is_deleted:
+            raise HTTPException(404, "Not found")
+        
         logger.info(
             "post, который требуется обновить: post_id = %s, post_content = %s",
             post.id,
             post.content,
         )
-        if post is None or post.is_deleted:
-            raise HTTPException(404, "Not found")
-
-        post.content = data.content
-        post.id = post_id
+        if data.content is not None:
+            post.content = data.content
+            post.id = post_id
+            logger.info("писец %s", post.id)
         return await self.post_repo.update(post)
 
     async def delete(self, post_id: int) -> Post:
@@ -63,10 +65,8 @@ class PostService:
         post = await self.post_repo.get_by_id(post_id)
         if post is None or post.is_deleted:
             raise HTTPException(404, "Not found")
-
-        post.likes_count = post.likes_count + 1
-        post.id = post_id
-        return await self.post_repo.like_post(post)
+        
+        return await self.post_repo.like_post(post_id)
 
 
 def get_post_service(post_repo: PostRepositoryDeps):

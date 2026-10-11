@@ -2,7 +2,7 @@ import logging
 from typing import Annotated
 
 from fastapi import Depends
-from sqlalchemy import select
+from sqlalchemy import select, update
 from sqlalchemy.sql.functions import count
 
 from app.core.db import DbSessionDeps
@@ -58,11 +58,17 @@ class PostRepository:
 
         return posts, total
 
-    async def like_post(self, post: Post) -> Post:
-        managed_post = await self.session.merge(post)
+    async def like_post(self, post_id: int) -> Post:
+        query = (
+            update(Post)
+            .where(Post.id == post_id, Post.is_deleted == False)
+            .values(likes_count=Post.likes_count + 1)
+            .returning(Post)
+        )
+        result = await self.session.execute(query)
+        updated_post = result.scalar_one_or_none()
         await self.session.commit()
-        await self.session.refresh(managed_post)
-        return managed_post
+        return updated_post
 
 
 def get_post_repository(session: DbSessionDeps):
