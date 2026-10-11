@@ -1,16 +1,9 @@
 from datetime import datetime
 
 from sqlalchemy import Boolean, DateTime, Integer, String, func
-from sqlalchemy.orm import DeclarativeBase, Mapped, Query, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column
 
 from app.core.db import Base
-
-
-class Base(DeclarativeBase):
-    def __init_subclass__(cls):
-        super().__init_subclass__()
-        # Это позволит избежать  необходимости каждый раз добавлять фильтр
-        cls.query = Query([cls]).filter(cls.is_deleted == False)
 
 
 class Post(Base):

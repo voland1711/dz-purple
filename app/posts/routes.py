@@ -35,7 +35,6 @@ class UnAuthHttpException(HTTPException):
 async def get_post(
     service: PostServiceDeps, settings: SettingsDeps, path: PostPath = Depends()
 ):
-    logger.info("Строка подключения БД для размещения постов: %s", settings.db.url)
     logger.info(
         "Минимальное количество минут для размещения следующего поста: : %s",
         settings.debounce.minimal_post_debounce_time,
@@ -69,7 +68,7 @@ async def create_post(service: PostServiceDeps, data: PostCreateRequest):
         id=res.id,
         content=res.content,
         created_at=res.created_at,
-        update_at=res.updated_at,
+        updated_at=res.updated_at,
         likes_count=res.likes_count,
     )
 
@@ -92,7 +91,7 @@ async def update_post(
         id=res.id,
         content=res.content,
         created_at=res.created_at,
-        update_at=res.updated_at,
+        updated_at=res.updated_at,
         likes_count=res.likes_count,
     )
 

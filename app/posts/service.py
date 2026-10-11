@@ -32,7 +32,7 @@ class PostService:
         post = await self.post_repo.get_by_id(post_id)
         if post is None or post.is_deleted:
             raise HTTPException(404, "Not found")
-        
+
         logger.info(
             "post, который требуется обновить: post_id = %s, post_content = %s",
             post.id,
@@ -65,7 +65,7 @@ class PostService:
         post = await self.post_repo.get_by_id(post_id)
         if post is None or post.is_deleted:
             raise HTTPException(404, "Not found")
-        
+
         return await self.post_repo.like_post(post_id)
 
 

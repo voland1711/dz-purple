@@ -32,7 +32,7 @@ class PostCreateResponse(BaseModel):
     id: int
     content: str
     created_at: datetime
-    update_at: datetime
+    updated_at: datetime
     likes_count: int
 
 
@@ -56,7 +56,7 @@ class PostUpdateResponse(BaseModel):
     id: int
     content: str
     created_at: datetime
-    update_at: datetime
+    updated_at: datetime
     likes_count: int
 
 
