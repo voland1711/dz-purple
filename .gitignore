@@ -9,3 +9,5 @@ wheels/
 #virtual environments
 .venv
 .env
+/postgres_data
+docker-compose.yaml

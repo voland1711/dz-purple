@@ -29,6 +29,7 @@ class Settings(BaseSettings):
         env_file=".env", env_file_encoding="utf-8", extra="ignore"
     )
     database_url: str
+    database_url_sync: str
     jwt_secret: str
     minimal_post_debounce_time: int
 
